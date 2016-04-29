@@ -14,10 +14,9 @@
     NSString *result = [NSString string];
     //确保num1大些，如果不是，则调换。
     if (num1.length < num2.length){
-        result = [NSString stringWithString:num1];
-        num1 = [NSString stringWithString:num2];
-        num2 = [NSString stringWithString:result];
-        result = [NSString string];
+        NSString *result = num1;
+        num1 = num2;
+        num2 = num1;
     }
     //进位
     int carryBit = 0;
