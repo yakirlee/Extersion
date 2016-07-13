@@ -25,6 +25,14 @@
     return label;
 }
 
++ (instancetype)ylLabelWithTitle:(NSString *)title fontSize:(CGFloat)fontSize {
+    return [self ylLabelWithTitle:title fontSize:fontSize frame:CGRectZero textColor:[UIColor blackColor]];
+}
 
++ (instancetype)ylLabelWithTitle:(NSString *)title
+                        fontSize:(CGFloat)fontSize
+                       textColor:(UIColor *)color {
+    return [self ylLabelWithTitle:title fontSize:fontSize frame:CGRectZero textColor:color];
+}
 
 @end

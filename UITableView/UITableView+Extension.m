@@ -15,8 +15,8 @@
                           DataSoure:(id<UITableViewDataSource>)dataSource
                            delegate:(id<UITableViewDelegate>)delegate {
     
-    UITableView *tableView = [UITableView new];
-    tableView.frame = frame;
+    UITableView *tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    tableView.tableFooterView = [UIView new];
     tableView.dataSource = dataSource;
     tableView.delegate = delegate;
     

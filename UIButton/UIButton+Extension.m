@@ -15,15 +15,18 @@
                         imageName:(NSString *)imageName
                             frame:(CGRect)frame {
     
-    UIButton *button = [UIButton new];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    button.titleLabel.text = title;
+    [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:fontSize];
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_highted", imageName]] forState:UIControlStateHighlighted];
     button.frame = frame;
+    button.layer.cornerRadius = 2;
+    button.layer.masksToBounds = YES;
     
     return button;
 }
+
 
 @end
