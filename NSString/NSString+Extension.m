@@ -17,6 +17,9 @@
 }
 
 + (NSString *)arrayToJson:(NSArray *)array {
+    if (array == nil) {
+        return nil;
+    }
     NSError *parseError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array options:NSJSONWritingPrettyPrinted error:&parseError];
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -69,10 +72,62 @@
         return [NSString stringWithFormat:@"%ld分钟前",minNow-min];
     }
     if (secNow!= second) {
-        return [NSString stringWithFormat:@"%ld秒前",secNow-second];
+        return [NSString stringWithFormat:@"1分钟前"];
     }
     return @"";
-    
-    
 }
++ (NSString *)analyseExpressWithTime:(NSString *)time {
+    if (time.length == 0) {
+        return nil;
+    }
+    NSUInteger year = [[time substringToIndex:4] integerValue];
+    NSUInteger month = [[time substringWithRange:NSMakeRange(4, 2)]integerValue];
+    NSUInteger day = [[time substringWithRange:NSMakeRange(6, 2)]integerValue];
+    NSUInteger hour = [[time substringWithRange:NSMakeRange(8, 2)]integerValue];
+    NSUInteger min = [[time substringWithRange:NSMakeRange(10, 2)]integerValue];
+    return [NSString stringWithFormat:@"%ld-%02ld-%02ld %02ld:%02ld",year,month,day,hour,min];
+}
++ (NSString *)analysePostTimeWithTime:(NSString *)time {
+    if (time.length == 0) {
+        return nil;
+    }
+    NSUInteger year = [[time substringToIndex:4] integerValue];
+    NSUInteger month = [[time substringWithRange:NSMakeRange(4, 2)]integerValue];
+    NSUInteger day = [[time substringWithRange:NSMakeRange(6, 2)]integerValue];
+    NSUInteger hour = [[time substringWithRange:NSMakeRange(8, 2)]integerValue];
+    NSUInteger min = [[time substringWithRange:NSMakeRange(10, 2)]integerValue];
+    NSUInteger second = [[time substringFromIndex:12]integerValue];;
+    
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[NSDate date]];
+    NSInteger dayNow = [components day];
+//    NSInteger monthNow = [components month];
+    NSInteger yearNow = [components year];
+    NSInteger hourNow = [components hour];
+    NSInteger minNow = [components minute];
+    NSInteger secNow = [components second];
+    
+    if (yearNow != year) {
+        return [NSString stringWithFormat:@"%ld-%02ld-%02ld %02ld:%02ld",year,month,day,hour,min];
+    }
+    
+    if (dayNow != day) {
+        return [NSString stringWithFormat:@"%02ld-%02ld %02ld:%02ld",month,day,hour,min];
+    }
+    if (hourNow != hour) {
+        return [NSString stringWithFormat:@"%ld小时前",hourNow-hour];
+    }
+    if (minNow != min) {
+        return [NSString stringWithFormat:@"%ld分钟前",minNow-min];
+    }
+    if (secNow!= second) {
+        return [NSString stringWithFormat:@"1分钟前"];
+    }
+    return @"";
+}
++ (NSString *)getAppVersion {
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *appVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    return appVersion;
+}
+
 @end
